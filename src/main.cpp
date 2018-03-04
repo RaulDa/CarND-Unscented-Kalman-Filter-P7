@@ -10,8 +10,8 @@ using namespace std;
 // for convenience
 using json = nlohmann::json;
 
-// Checks if the SocketIO event has JSON data.
-// If there is data the JSON object in string format will be returned,
+// checks if the SocketIO event has JSON data.
+// if there is data the JSON object in string format will be returned,
 // else the empty string "" will be returned.
 std::string hasData(std::string s) {
   auto found_null = s.find("null");
@@ -30,7 +30,7 @@ int main()
 {
   uWS::Hub h;
 
-  // Create a Kalman Filter instance
+  // create a Kalman Filter instance
   UKF ukf;
 
   // used to compute the RMSE later
@@ -105,10 +105,10 @@ int main()
     	  gt_values(3) = vy_gt;
     	  ground_truth.push_back(gt_values);
           
-          //Call ProcessMeasurment(meas_package) for Kalman filter
-    	  ukf.ProcessMeasurement(meas_package);    	  
+          // call ProcessMeasurment(meas_package) for Kalman filter
+    	  ukf.ProcessMeasurement(meas_package);
 
-    	  //Push the current estimated x,y positon from the Kalman filter's state vector
+    	  // push the current estimated x,y positon from the Kalman filter's state vector
 
     	  VectorXd estimate(4);
 
@@ -139,10 +139,51 @@ int main()
           auto msg = "42[\"estimate_marker\"," + msgJson.dump() + "]";
           // std::cout << msg << std::endl;
           ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
+
+          // store yaw and yaw rate for plotting results
+          double yaw_rate = ukf.x_(4);
+
+          // add actual yaw and yaw rate to history vectors
+          ukf.yaw_estimate_.push_back(yaw);
+          ukf.yaw_rate_estimate_.push_back(yaw_rate);
+
+          // store ground values and add them to history vectors
+          float yaw_ground;
+          float yaw_rate_ground;
+          iss >> yaw_ground;
+          iss >> yaw_rate_ground;
+
+          ukf.yaw_ground_.push_back(yaw_ground);
+          ukf.yaw_rate_ground_.push_back(yaw_rate_ground);
+
+          // export yaw estimate and ground values to text file for plotting purposes
+          if (ukf.yaw_estimate_.size()>495){
+             ofstream myfile;
+             myfile.open("yaw.txt");
+
+             for (int i=0;i<ukf.yaw_estimate_.size()-1;i++){
+                myfile << ukf.vector_time_s_[i] << " " << ukf.yaw_estimate_[i] << " " << ukf.yaw_ground_[i];
+                myfile << "\n";
+             }
+                myfile.close();
+          }
+
+          // export yaw rate estimate and ground values to text file for plotting purposes
+          if (ukf.yaw_rate_estimate_.size()>495){
+             ofstream myfile;
+             myfile.open("yaw_rate.txt");
+
+             for (int i=0;i<ukf.yaw_rate_estimate_.size()-1;i++){
+                myfile << ukf.vector_time_s_[i] << " " << ukf.yaw_rate_estimate_[i] << " " << ukf.yaw_rate_ground_[i];
+                myfile << "\n";
+             }
+                myfile.close();
+          }
+
+
 	  
         }
       } else {
-        
         std::string msg = "42[\"manual\",{}]";
         ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
       }

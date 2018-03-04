@@ -21,8 +21,17 @@ public:
 
   /**
   * A helper method to calculate RMSE.
+  * @param estimations Estimations
+  * @param ground_truth Ground truth values
   */
   VectorXd CalculateRMSE(const vector<VectorXd> &estimations, const vector<VectorXd> &ground_truth);
+
+  /**
+  * A helper method to adjust an angle between -PI and PI.
+  * @param vecElement Vector element where the angle is stored
+  * @param Vector Vector where the angle to be adjusted is located
+  */
+  void AdjustAngle(int vecElement, VectorXd &Vector);
 
 };
 
