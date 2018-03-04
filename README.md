@@ -56,7 +56,7 @@ The algorithm predicts first and then updates. `ukf.cpp` firstly calls `Predicti
 
 The prediction step is the for same both sensors. Augmented sigma points are generated via `AugmentedSigmaPoints`. Then `Prediction` is called, where the sigma points are predicted (`SigmaPointPrediction`) as well as the mean and covariance (`PredictMeanAndCovariance`).
 
-The algorithm performs the handling of the update step via `UpdateLidar` (laser) or `UpdateRadar` (radar). For laser, the routine calls `PredictLidarMeasurement` for measurement production and `UpdateLidarState` to perform the update. For radar, the called functions are `PredictRadarMeasurement` and `UpdateRadarState`.
+The algorithm performs the handling of the update step via `UpdateLidar` (laser) or `UpdateRadar` (radar). For laser, the routine calls `PredictLidarMeasurement` for measurement prediction and `UpdateLidarState` to perform the update. For radar, the called functions are `PredictRadarMeasurement` and `UpdateRadarState`.
 
 The difference between radar and lidar is produced during the measurement prediction. For radar, the predicted sigma points are converted to polar coordinates and then the difference between prediction and measurement is taken. For lidar there is no conversion, and just the H matrix is applied to get the x and y positions and discard the rest of state elements. So, during the radar update we work with a vector of three elements, and during lidar with a vector of two elements.
 
