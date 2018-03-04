@@ -54,7 +54,7 @@ The algorithm predicts first and then updates. `ukf.cpp` firstly calls `Predicti
 
 #### 3. Handling of radar and lidar measurements
 
-The prediction step is the same both sensors. Augmented sigma points are generated via `AugmentedSigmaPoints`. Then `Prediction` is called, where the sigma points are predicted (`SigmaPointPrediction`) as well as the mean and covariance (`PredictMeanAndCovariance`).
+The prediction step is the for same both sensors. Augmented sigma points are generated via `AugmentedSigmaPoints`. Then `Prediction` is called, where the sigma points are predicted (`SigmaPointPrediction`) as well as the mean and covariance (`PredictMeanAndCovariance`).
 
 The algorithm performs the handling of the update step via `UpdateLidar` (laser) or `UpdateRadar` (radar). For laser, the routine calls `PredictLidarMeasurement` for measurement production and `UpdateLidarState` to perform the update. For radar, the called functions are `PredictRadarMeasurement` and `UpdateRadarState`.
 
