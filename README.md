@@ -62,9 +62,7 @@ The difference between radar and lidar is produced during the measurement predic
 
 ### Accuracy and results
 
-The algorithm reaches a final RMSE of [.0679 .0827 .3325 .2243], as the following video shows:
-
-[![Alt text for your video](https://i.ytimg.com/vi/9osHme6ntOI/hqdefault.jpg?sqp=-oaymwEZCNACELwBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLDKmOwzlsrU8vAPiMsXWhVIRWHlUQ)](https://www.youtube.com/watch?v=9osHme6ntOI)
+The algorithm reaches a final RMSE of [.0679 .0827 .3325 .2243], as shown in this [video](https://www.youtube.com/watch?v=9osHme6ntOI).
 
 This amount satisfies the limit proposed in the project rubric ([.09 .10 .40 .30]).
 
